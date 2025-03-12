@@ -2,6 +2,21 @@
 
 Welcome to the "Battle of the Hero's" game! This is a game where two players strategize and battle to see who the true hero is. The game supports different characters, each with unique abilities.
 
+## Game Flow
+
+NOTES:
+
+- **Currently the game only uses the health points value and is randomized. The strategic portion of this game is yet to be developed.**
+
+- **Flow**:
+    - Two players first enter their name.
+    - The game randomly selects who will play first.
+    - Each player selects thier character.
+    - Player 1 attacks and then player 2 attacks.
+    - This continues until one player loses all of their health points.
+    - The game ends with one player as the Victor!!
+
+
 ## Prerequisites
 
 - `Python` (3.x)

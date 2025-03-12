@@ -71,7 +71,7 @@ def attack(player, weapon_multiplier):
 
     print(f"{player}: {Fore.YELLOW}loses {health * weapon_multiplier} health points.{Style.RESET_ALL}")
 
-# NOT USED YET: Define how to calculate whether the defense move is an attack or defense and what the health point value will be.
+# NOT USED YET: Define how to calculate whether the defense move is an 'attack' or 'defense' and what the health point value will be.
 def defense_move():
     global special_defense
     global defense_value
@@ -125,7 +125,7 @@ def first_to_play():
 
         return player_1, player_2
 
-# Player selects attack_type to determine what multiplier is applied to the health points that are lost.
+# Player selects 'attack_type' to determine what multiplier is applied to the health points that are lost.
 def attack_choice(player, type):
     global weapon_multiplier
     global weapons
@@ -167,18 +167,18 @@ def attack_choice(player, type):
     weapon_multiplier = attack_value
     return weapon_multiplier
 
-# ONLY HEALTH USED CURRENTLY: Character attributed (Health, Damage, Agility).
+# ONLY HEALTH USED CURRENTLY: Character attributes (Health, Damage, Agility).
 wizard = Character(150, 100, 100)
 warrior = Character(150, 100, 100)
 healer = Character(150, 100, 100)
 
-# Execute the game's introduction
+# Execute the game's introduction.
 introduction()
 
 # Execute who plays first.
 first_to_play()
 
-# Set player variables
+# Set player variables.
 player_one = player_selector(player_1)
 player_one_type = type
 player_one_turns = 1
@@ -212,7 +212,7 @@ while health > 0:
     print("----------------------------------------------")
     print("")
 
-    # Increment player 1 turns count.
+    # Increment player 1's number of turns taken count.
     player_one_turns += 1
 
     # Finish the game if player 2's health falls below 0.
@@ -234,7 +234,7 @@ while health > 0:
     print("----------------------------------------------")
     print("")
 
-    # Increment player 2 turns count.
+    # Increment player 2's number of turns taken count.
     player_two_turns += 1
 
     # Finish the game if player 1's health falls below 0.
