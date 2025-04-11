@@ -167,6 +167,19 @@ def attack_choice(player, type):
     weapon_multiplier = attack_value
     return weapon_multiplier
 
+def display_battle_ascii():
+    print(r"""
+          \|||/                                     \|||/
+          (o o)                                     (o o)
+       ooO-[~]-Ooo             🔥⚔️🔥⚔️🔥         ooO--[~]--Ooo
+        /|     |\                                 /|     |\
+       /_|_____|_\--O===[###]===>>>✨            /_|_____|_\
+         //   \\              ✨<<<===[###]===O--  //   \\
+        ||     ||                                 ||     ||
+       /_\     /_\                               /_\     /_\
+        /       \                                 /       \
+    """)
+
 # ONLY HEALTH USED CURRENTLY: Character attributes (Health, Damage, Agility).
 wizard = Character(150, 100, 100)
 warrior = Character(150, 100, 100)
@@ -202,6 +215,7 @@ while health > 0:
     print(f"{player_1}: {Fore.YELLOW}ATTACK{Style.RESET_ALL}")
 
     attack_choice(player_1, player_one_type)
+    display_battle_ascii()
     attack(player_2, weapon_multiplier)
 
     # Calculate player 2's remaining health points.
@@ -209,8 +223,7 @@ while health > 0:
 
     print(f"{player_2}: {Fore.GREEN}{player_two_type} has {player_two_health} health points left.{Style.RESET_ALL}")
     print(f"{player_1}: {Fore.YELLOW}took {player_one_turns} turn(s) so far.{Style.RESET_ALL}")
-    print("----------------------------------------------")
-    print("")
+    print("----------------------------------------------\n")
 
     # Increment player 1's number of turns taken count.
     player_one_turns += 1
@@ -224,6 +237,7 @@ while health > 0:
     print(f"{player_2}: {Fore.YELLOW}ATTACK{Style.RESET_ALL}")
 
     attack_choice(player_2, player_two_type)
+    display_battle_ascii()
     attack(player_1, weapon_multiplier)
 
     # Calculate player 1's remaining health points.
@@ -231,11 +245,11 @@ while health > 0:
 
     print(f"{player_1}: {Fore.GREEN}{player_one_type} has {player_one_health} health points left.{Style.RESET_ALL}")
     print(f"{player_2}: {Fore.YELLOW}took {player_two_turns} turn(s) so far.{Style.RESET_ALL}")
-    print("----------------------------------------------")
-    print("")
+    print("----------------------------------------------\n")
 
     # Increment player 2's number of turns taken count.
     player_two_turns += 1
+
 
     # Finish the game if player 1's health falls below 0.
     if player_one_health <= 0:
