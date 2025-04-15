@@ -71,7 +71,7 @@ def attack(player, weapon_multiplier):
 
     print(f"{player}: {Fore.YELLOW}loses {health * weapon_multiplier} health points.{Style.RESET_ALL}")
 
-# NOT USED YET: Define how to calculate whether the defense move is an 'attack' or 'defense' and what the health point value will be.
+# Define how to calculate whether the defense move is an 'attack' or 'defense' and what the health point value will be.
 def defense_move():
     global special_defense
     global defense_value
@@ -84,11 +84,11 @@ def defense_move():
     if special_defense == "defend":
         defend = [5, 20, 20, 20, 25, 25, 25, 40]
         defense_value = random.choice(defend)
-        print(f"Special Move Activated: Defense will be applied against upcoming attack by adding {defense_value} health points to defending player.")
+        print(f"Special Move Activated: {Fore.GREEN}Defense will be applied against upcoming attack by adding {defense_value} health points to defending player.{Style.RESET_ALL}")
     else:
         attack = [5, 20, 20, 20, 25, 25, 25, 40]
         defense_value = random.choice(attack)
-        print(f"Special Move Activated: Attack will be applied against upcoming attack by removing {defense_value} health points from attacking player.")
+        print(f"Special Move Activated: {Fore.GREEN}Attack will be applied against upcoming attack by removing {defense_value} health points from attacking player.{Style.RESET_ALL}")
 
     return special_defense, defense_value
 
@@ -171,7 +171,7 @@ def display_battle_ascii():
     print(r"""
           \|||/                                     \|||/
           (o o)                                     (o o)
-       ooO-[~]-Ooo             🔥⚔️🔥⚔️🔥         ooO--[~]--Ooo
+       ooO-[~]-Ooo             🔥⚔️🔥⚔️🔥       ooO--[~]--Ooo
         /|     |\                                 /|     |\
        /_|_____|_\--O===[###]===>>>✨            /_|_____|_\
          //   \\              ✨<<<===[###]===O--  //   \\
@@ -208,50 +208,87 @@ print(f"{player_2}: {Fore.GREEN}{player_two_type} has a starting health of {play
 print("----------------------------------------------")
 print("")
 
+# Flags to track if each player has used their special defense move
+used_defense_player_one = False
+used_defense_player_two = False
+
 # GAME PLAY: Attack until one player loses all of their health points.
 while health > 0:
 
     # PLAYER 1's turn to play:
     print(f"{player_1}: {Fore.YELLOW}ATTACK{Style.RESET_ALL}")
 
+    # Ask if Player 2 wants to use special defense
+    if not used_defense_player_two:
+        use_def = input(f"{player_2}, would you like to use your SPECIAL DEFENSE MOVE? (yes/no): ").lower()
+        if use_def == "yes":
+            special_defense, defense_value = defense_move()
+            used_defense_player_two = True
+        else:
+            special_defense, defense_value = None, 0
+    else:
+        special_defense, defense_value = None, 0
+
     attack_choice(player_1, player_one_type)
     display_battle_ascii()
     attack(player_2, weapon_multiplier)
 
-    # Calculate player 2's remaining health points.
-    player_two_health = player_two_health - (health * weapon_multiplier)
+    damage = health * weapon_multiplier
+    if special_defense == "defend":
+        damage -= defense_value
+        print(f"{player_2} defended and reduced the damage by {defense_value}!")
+    elif special_defense == "attack":
+        print(f"{player_1} receives a counter attack of {defense_value}!")
+        player_one_health -= defense_value
 
-    print(f"{player_2}: {Fore.GREEN}{player_two_type} has {player_two_health} health points left.{Style.RESET_ALL}")
-    print(f"{player_1}: {Fore.YELLOW}took {player_one_turns} turn(s) so far.{Style.RESET_ALL}")
+    player_two_health -= max(damage, 0)
+
+    print(f"\n--- Health Status After Attack ---")
+    print(f"{player_1}: {Fore.GREEN}{player_one_health} HP{Style.RESET_ALL}")
+    print(f"{player_2}: {Fore.GREEN}{player_two_health} HP{Style.RESET_ALL}")
     print("----------------------------------------------\n")
 
-    # Increment player 1's number of turns taken count.
     player_one_turns += 1
 
-    # Finish the game if player 2's health falls below 0.
     if player_two_health <= 0:
         print(f"{player_1}: {Fore.GREEN}WINS with {player_one_health} points!!{Style.RESET_ALL} {player_2}: {Fore.RED}LOSES with {player_two_health} points!!{Style.RESET_ALL}")
-        exit(0)
+        break
 
     # PLAYER 2's turn to play:
     print(f"{player_2}: {Fore.YELLOW}ATTACK{Style.RESET_ALL}")
+
+    # Ask if Player 1 wants to use special defense
+    if not used_defense_player_one:
+        use_def = input(f"{player_1}, would you like to use your SPECIAL DEFENSE MOVE? (yes/no): ").lower()
+        if use_def == "yes":
+            special_defense, defense_value = defense_move()
+            used_defense_player_one = True
+        else:
+            special_defense, defense_value = None, 0
+    else:
+        special_defense, defense_value = None, 0
 
     attack_choice(player_2, player_two_type)
     display_battle_ascii()
     attack(player_1, weapon_multiplier)
 
-    # Calculate player 1's remaining health points.
-    player_one_health = player_one_health - (health * weapon_multiplier)
+    damage = health * weapon_multiplier
+    if special_defense == "defend":
+        damage -= defense_value
+        print(f"{player_1} defended and reduced the damage by {defense_value}!")
+    elif special_defense == "attack":
+        print(f"{player_2} receives a counter attack of {defense_value}!")
+        player_two_health -= defense_value
 
-    print(f"{player_1}: {Fore.GREEN}{player_one_type} has {player_one_health} health points left.{Style.RESET_ALL}")
-    print(f"{player_2}: {Fore.YELLOW}took {player_two_turns} turn(s) so far.{Style.RESET_ALL}")
+    player_one_health -= max(damage, 0)
+
+    print(f"\n--- Health Status After Attack ---")
+    print(f"{player_1}: {Fore.GREEN}{player_one_health} HP{Style.RESET_ALL}")
+    print(f"{player_2}: {Fore.GREEN}{player_two_health} HP{Style.RESET_ALL}")
     print("----------------------------------------------\n")
 
-    # Increment player 2's number of turns taken count.
     player_two_turns += 1
 
-
-    # Finish the game if player 1's health falls below 0.
     if player_one_health <= 0:
         print(f"{player_2}: {Fore.GREEN}WINS with {player_two_health} points!!{Style.RESET_ALL} {player_1}: {Fore.RED}LOSES with {player_one_health} points!!{Style.RESET_ALL}")
-        exit(0)
+        break
